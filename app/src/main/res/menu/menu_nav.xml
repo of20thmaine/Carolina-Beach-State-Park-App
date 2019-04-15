@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/my_ic_home"
+            android:title="@string/nav_home" />
+        <item
+            android:id="@+id/nav_ecosystems"
+            android:icon="@drawable/my_ic_ecosystem"
+            android:title="@string/nav_ecosystems" />
+        <item
+            android:id="@+id/nav_animals"
+            android:icon="@drawable/my_ic_animal"
+            android:title="@string/nav_animals" />
+        <item
+            android:id="@+id/nav_plants"
+            android:icon="@drawable/my_ic_plant"
+            android:title="@string/nav_plants" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/my_ic_map"
+            android:title="@string/nav_map" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/my_ic_about"
+            android:title="@string/nav_about" />
+    </group>
+</menu>

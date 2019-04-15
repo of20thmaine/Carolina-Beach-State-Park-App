@@ -1,26 +1,36 @@
 package com.cbsp.carolinabeachtours;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
+import android.widget.RelativeLayout;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements
+public class LocationListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
+
+    public static List<Location> locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_location_list);
+
+        Intent intent = getIntent();
+        Location.LocationType locationType = (Location.LocationType)
+                intent.getSerializableExtra("LocationType");
 
         FirestoreConnector fp = new FirestoreConnector();
-        fp.populateFirestore(this);
+        fp.getAllLocationsOfType(locationType, this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -36,7 +46,36 @@ public class MainActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
+    void drawData(List<Location> locations) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Visit " + locations.get(0).typeAsString() + "s");
+        LocationListActivity.locations = locations;
+
+        RecyclerView locationRecycler = findViewById(R.id.list_recycler);
+
+        CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(locations);
+        locationRecycler.setAdapter(adapter);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        locationRecycler.setLayoutManager(layoutManager);
+
+        adapter.setListener(new CaptionedImagesAdapter.Listener() {
+            public void onClick(int position) {
+            Intent intent = new Intent(LocationListActivity.this, LocationActivity.class);
+            intent.putExtra(LocationActivity.LOCATION_INDEX, position);
+            startActivity(intent);
+            }
+        });
+    }
+
+    void dataLoadFailed() {
+        RelativeLayout bigPapa = findViewById(R.id.top_parent);
+        Snackbar snackbar = Snackbar.make(bigPapa, "There was a connection failure.",
+                Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         Intent intent;

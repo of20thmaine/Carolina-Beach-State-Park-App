@@ -11,19 +11,24 @@ import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements
+public class LocationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String LOCATION_INDEX = "locationIndex";
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_location);
 
-        FirestoreConnector fp = new FirestoreConnector();
-        fp.populateFirestore(this);
+        Intent intent = getIntent();
+        int locationIndex = intent.getIntExtra(LocationActivity.LOCATION_INDEX, 0);
+        location = LocationListActivity.locations.get(locationIndex);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(location.getName());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -69,4 +74,5 @@ public class MainActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
     }
+
 }
