@@ -22,15 +22,14 @@ public class Location {
     }
 
     private LocationType type;
-    private String name, about;
+    private String name, about, isIn;
     private double latitude, longitude;
-    private Location isIn;
-    private int imageId;
+    private int imageId, popularity;
 
     public Location() { }
 
     public Location(LocationType type, String name, String about, double latitude,
-                    double longitude, Location isIn, int imageId) {
+                    double longitude, String isIn, int imageId, int popularity) {
         this.type = type;
         this.name = name;
         this.about = about;
@@ -38,6 +37,7 @@ public class Location {
         this.longitude = longitude;
         this.isIn = isIn;
         this.imageId = imageId;
+        this.popularity = popularity;
     }
 
     public LocationType getType() {
@@ -60,12 +60,16 @@ public class Location {
         return longitude;
     }
 
-    public Location getIsIn() {
+    public String getIsIn() {
         return isIn;
     }
 
     public int getImageId() {
         return imageId;
+    }
+
+    public int getPopularity() {
+        return popularity;
     }
 
     public String typeAsString() {

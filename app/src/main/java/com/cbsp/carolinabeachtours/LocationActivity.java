@@ -1,6 +1,8 @@
 package com.cbsp.carolinabeachtours;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,26 +11,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
-import java.util.List;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class LocationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String LOCATION_INDEX = "locationIndex";
-    private Location location;
+    public static final String LOCATION_INDEX = "li";
+    Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        Intent intent = getIntent();
-        int locationIndex = intent.getIntExtra(LocationActivity.LOCATION_INDEX, 0);
-        location = LocationListActivity.locations.get(locationIndex);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(location.getName());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -39,6 +37,21 @@ public class LocationActivity extends AppCompatActivity implements
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Intent intent = getIntent();
+        int i = intent.getIntExtra(LocationActivity.LOCATION_INDEX, 0);
+        location = LocationListActivity.locations.get(i);
+
+        getSupportActionBar().setTitle(location.getName());
+
+        ImageView imageView = findViewById(R.id.info_image);
+        Drawable drawable = ContextCompat.getDrawable(this,
+                location.getImageId());
+        imageView.setImageDrawable(drawable);
+        imageView.setContentDescription(location.getName());
+
+        TextView textView = findViewById(R.id.info_text);
+        textView.setText(location.getAbout());
     }
 
     @Override
@@ -53,6 +66,14 @@ public class LocationActivity extends AppCompatActivity implements
             case R.id.nav_ecosystems:
                 intent = new Intent(this, LocationListActivity.class);
                 intent.putExtra("LocationType", Location.LocationType.ECOSYSTEM);
+                break;
+            case R.id.nav_plants:
+                intent = new Intent(this, LocationListActivity.class);
+                intent.putExtra("LocationType", Location.LocationType.PLANT);
+                break;
+            case R.id.nav_animals:
+                intent = new Intent(this, LocationListActivity.class);
+                intent.putExtra("LocationType", Location.LocationType.ANIMAL);
                 break;
             default:
                 intent = new Intent(this, MainActivity.class);
@@ -75,4 +96,7 @@ public class LocationActivity extends AppCompatActivity implements
         }
     }
 
+    public void visitHere(android.view.View v) {
+        // Will deal with later, opens map.
+    }
 }

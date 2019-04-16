@@ -48,6 +48,7 @@
             app:menu="@menu/menu_nav"
             android:background="?attr/colorPrimaryDark"
             app:itemIconTint="@color/colorWhite"
-            app:itemTextColor="@color/colorWhite" />
+            app:itemTextColor="@color/colorWhite"
+            app:theme="@style/NavigationDrawerStyle"/>
     </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>

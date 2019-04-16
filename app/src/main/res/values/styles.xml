@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -9,4 +8,16 @@
         <item name="android:actionMenuTextColor">@color/colorWhite</item>
     </style>
 
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">20sp</item><!-- text size in menu-->
+        <!-- item size in menu-->
+        <item name="android:listPreferredItemHeightSmall">60dp</item>
+        <item name="listPreferredItemHeightSmall">60dp</item>
+        <!-- item padding left in menu-->
+        <item name="android:listPreferredItemPaddingLeft">20dp</item>
+        <item name="listPreferredItemPaddingLeft">20dp</item>
+        <!-- item padding right in menu-->
+        <item name="android:listPreferredItemPaddingRight">8dp</item>
+        <item name="listPreferredItemPaddingRight">8dp</item>
+    </style>
 </resources>

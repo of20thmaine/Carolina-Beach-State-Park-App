@@ -42,6 +42,15 @@ class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter
         this.listener = listener;
     }
 
+    /**
+     * Lets me hot swap new data into recycler view.
+     * @param newData: List of locations.
+     */
+    void swapDataSet(List<Location> newData){
+        this.locations = newData;
+        notifyDataSetChanged();
+    }
+
     @Override
     public CaptionedImagesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cv = (CardView) LayoutInflater.from(parent.getContext())

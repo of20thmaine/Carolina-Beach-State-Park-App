@@ -26,11 +26,10 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:background="@drawable/card_gradient"
-            android:textStyle="bold"
-            android:textSize="24sp"
+            android:textSize="28sp"
             android:textColor="#ffffff"
             android:gravity="bottom|center"
-            android:paddingBottom="12dp"/>
+            android:paddingBottom="16dp"/>
 
     </FrameLayout>
 

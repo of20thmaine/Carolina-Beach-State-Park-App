@@ -1,18 +1,27 @@
 package com.cbsp.carolinabeachtours;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
+import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
+
+     RecyclerView locationRecycler;
+     CaptionedImagesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +29,10 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         FirestoreConnector fp = new FirestoreConnector();
-        fp.populateFirestore(this);
+        // Called once for demonstration:
+        //fp.populateFirestore(this);
+
+        fp.getPopularLocations(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -34,6 +46,42 @@ public class MainActivity extends AppCompatActivity implements
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        LocationListActivity.locations = new ArrayList<>();
+        locationRecycler = findViewById(R.id.list_recycler);
+        adapter = new CaptionedImagesAdapter(LocationListActivity.locations);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        locationRecycler.setLayoutManager(layoutManager);
+        locationRecycler.setAdapter(adapter);
+
+        adapter.setListener(new CaptionedImagesAdapter.Listener() {
+            public void onClick(int position) {
+                Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                intent.putExtra(LocationActivity.LOCATION_INDEX, position);
+
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * Called by firestore-connector when it finishes data retrieval from its own thread, refreshes
+     * the recycler view adapter data.
+     * @param locations: List of locations.
+     */
+    void drawData(List<Location> locations) {
+        LocationListActivity.locations = locations;
+        adapter.swapDataSet(LocationListActivity.locations);
+    }
+
+    /**
+     * Called by fire-store connector is db call fails. Displays error message in toast.
+     */
+    void dataLoadFailed() {
+        RelativeLayout bigPapa = findViewById(R.id.top_parent);
+        Snackbar snackbar = Snackbar.make(bigPapa, "There was a connection failure.",
+                Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     @Override
@@ -48,6 +96,14 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_ecosystems:
                 intent = new Intent(this, LocationListActivity.class);
                 intent.putExtra("LocationType", Location.LocationType.ECOSYSTEM);
+                break;
+            case R.id.nav_plants:
+                intent = new Intent(this, LocationListActivity.class);
+                intent.putExtra("LocationType", Location.LocationType.PLANT);
+                break;
+            case R.id.nav_animals:
+                intent = new Intent(this, LocationListActivity.class);
+                intent.putExtra("LocationType", Location.LocationType.ANIMAL);
                 break;
             default:
                 intent = new Intent(this, MainActivity.class);

@@ -13,12 +13,17 @@ import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
 import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
     public static List<Location> locations;
+    Toolbar toolbar;
+    RecyclerView locationRecycler;
+    CaptionedImagesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class LocationListActivity extends AppCompatActivity implements
         FirestoreConnector fp = new FirestoreConnector();
         fp.getAllLocationsOfType(locationType, this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -44,30 +49,43 @@ public class LocationListActivity extends AppCompatActivity implements
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
 
-    void drawData(List<Location> locations) {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Visit " + locations.get(0).typeAsString() + "s");
-        LocationListActivity.locations = locations;
-
-        RecyclerView locationRecycler = findViewById(R.id.list_recycler);
-
-        CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(locations);
-        locationRecycler.setAdapter(adapter);
-
+        /* So, when the firestore connection thread completes it updates the data used in the
+         * recycler view BUT recycler view needs an adapter in onCreate otw you get horrible errors.
+         * So I bind it to an empty adapter here, and when the db thread finishes it calls drawData()
+         * which refreshes the data inside the adapter.
+         */
+        LocationListActivity.locations = new ArrayList<>();
+        locationRecycler = findViewById(R.id.list_recycler);
+        adapter = new CaptionedImagesAdapter(locations);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         locationRecycler.setLayoutManager(layoutManager);
+        locationRecycler.setAdapter(adapter);
 
         adapter.setListener(new CaptionedImagesAdapter.Listener() {
             public void onClick(int position) {
-            Intent intent = new Intent(LocationListActivity.this, LocationActivity.class);
-            intent.putExtra(LocationActivity.LOCATION_INDEX, position);
-            startActivity(intent);
+                Intent intent = new Intent(LocationListActivity.this, LocationActivity.class);
+                intent.putExtra(LocationActivity.LOCATION_INDEX, position);
+                startActivity(intent);
             }
         });
     }
 
+    /**
+     * Called by firestore-connector when it finishes data retrieval from its own thread, refreshes
+     * the recycler view adapter data.
+     * @param locations: List of locations.
+     */
+    void drawData(List<Location> locations) {
+        LocationListActivity.locations = locations;
+        toolbar.setTitle("Visit " + locations.get(0).typeAsString() + "s");
+
+        adapter.swapDataSet(LocationListActivity.locations);
+    }
+
+    /**
+     * Called by fire-store connector is db call fails. Displays error message in toast.
+     */
     void dataLoadFailed() {
         RelativeLayout bigPapa = findViewById(R.id.top_parent);
         Snackbar snackbar = Snackbar.make(bigPapa, "There was a connection failure.",
@@ -87,6 +105,14 @@ public class LocationListActivity extends AppCompatActivity implements
             case R.id.nav_ecosystems:
                 intent = new Intent(this, LocationListActivity.class);
                 intent.putExtra("LocationType", Location.LocationType.ECOSYSTEM);
+                break;
+            case R.id.nav_plants:
+                intent = new Intent(this, LocationListActivity.class);
+                intent.putExtra("LocationType", Location.LocationType.PLANT);
+                break;
+            case R.id.nav_animals:
+                intent = new Intent(this, LocationListActivity.class);
+                intent.putExtra("LocationType", Location.LocationType.ANIMAL);
                 break;
             default:
                 intent = new Intent(this, MainActivity.class);
