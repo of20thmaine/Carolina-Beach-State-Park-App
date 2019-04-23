@@ -1,7 +1,6 @@
 package com.cbsp.carolinabeachtours;
 
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,12 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.List;
 
 class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder> {
 
     private List<Location> locations;
+    private Context ctx;
     private Listener listener;
+    private final StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
 
     interface Listener {
        void onClick(int position);
@@ -29,8 +34,9 @@ class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter
         }
     }
 
-    CaptionedImagesAdapter(List<Location> locations) {
+    CaptionedImagesAdapter(List<Location> locations, Context ctx) {
         this.locations = locations;
+        this.ctx = ctx;
     }
 
     @Override
@@ -63,10 +69,12 @@ class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter
         CardView cardView = holder.cardView;
         ImageView imageView = cardView.findViewById(R.id.info_image);
 
-        Drawable drawable = ContextCompat.getDrawable(cardView.getContext(),
-                locations.get(position).getImageId());
+        StorageReference image = mStorageRef.child(locations.get(position).getImageFile());
 
-        imageView.setImageDrawable(drawable);
+        GlideApp.with(ctx)
+                .load(image)
+                .into(imageView);
+
         imageView.setContentDescription(locations.get(position).getName());
 
         TextView textView = cardView.findViewById(R.id.info_text);

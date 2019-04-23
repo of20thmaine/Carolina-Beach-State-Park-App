@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements
 
         FirestoreConnector fp = new FirestoreConnector();
         // Called once for demonstration:
-        //fp.populateFirestore(this);
+        fp.populateFirestore(this);
 
         fp.getPopularLocations(this);
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements
 
         LocationListActivity.locations = new ArrayList<>();
         locationRecycler = findViewById(R.id.list_recycler);
-        adapter = new CaptionedImagesAdapter(LocationListActivity.locations);
+        adapter = new CaptionedImagesAdapter(LocationListActivity.locations, this);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         locationRecycler.setLayoutManager(layoutManager);
         locationRecycler.setAdapter(adapter);

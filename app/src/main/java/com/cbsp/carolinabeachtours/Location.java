@@ -1,5 +1,7 @@
 package com.cbsp.carolinabeachtours;
 
+import com.google.firebase.storage.StorageReference;
+
 public class Location {
 
     public enum LocationType {
@@ -22,21 +24,22 @@ public class Location {
     }
 
     private LocationType type;
-    private String name, about, isIn;
+    private String name, about, isIn, imageFile;
     private double latitude, longitude;
-    private int imageId, popularity;
+    private int popularity;
+    private StorageReference image;
 
     public Location() { }
 
     public Location(LocationType type, String name, String about, double latitude,
-                    double longitude, String isIn, int imageId, int popularity) {
+                    double longitude, String isIn, String imageFile, int popularity) {
         this.type = type;
         this.name = name;
         this.about = about;
         this.latitude = latitude;
         this.longitude = longitude;
         this.isIn = isIn;
-        this.imageId = imageId;
+        this.imageFile = imageFile;
         this.popularity = popularity;
     }
 
@@ -64,8 +67,8 @@ public class Location {
         return isIn;
     }
 
-    public int getImageId() {
-        return imageId;
+    public String getImageFile() {
+        return imageFile;
     }
 
     public int getPopularity() {

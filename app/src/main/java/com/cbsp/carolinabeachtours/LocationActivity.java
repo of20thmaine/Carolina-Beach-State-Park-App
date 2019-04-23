@@ -1,8 +1,6 @@
 package com.cbsp.carolinabeachtours;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,12 +11,15 @@ import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class LocationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
     public static final String LOCATION_INDEX = "li";
     Location location;
+    private final StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +45,15 @@ public class LocationActivity extends AppCompatActivity implements
 
         getSupportActionBar().setTitle(location.getName());
 
-        ImageView imageView = findViewById(R.id.info_image);
-        Drawable drawable = ContextCompat.getDrawable(this,
-                location.getImageId());
-        imageView.setImageDrawable(drawable);
-        imageView.setContentDescription(location.getName());
-
         TextView textView = findViewById(R.id.info_text);
         textView.setText(location.getAbout());
+
+        ImageView imageView = findViewById(R.id.info_image);
+        StorageReference image = mStorageRef.child(location.getImageFile());
+        GlideApp.with(this)
+                .load(image)
+                .into(imageView);
+        imageView.setContentDescription(location.getName());
     }
 
     @Override

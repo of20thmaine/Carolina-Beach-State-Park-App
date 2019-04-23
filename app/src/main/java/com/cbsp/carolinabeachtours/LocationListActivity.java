@@ -57,7 +57,7 @@ public class LocationListActivity extends AppCompatActivity implements
          */
         LocationListActivity.locations = new ArrayList<>();
         locationRecycler = findViewById(R.id.list_recycler);
-        adapter = new CaptionedImagesAdapter(locations);
+        adapter = new CaptionedImagesAdapter(locations, this);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         locationRecycler.setLayoutManager(layoutManager);
         locationRecycler.setAdapter(adapter);

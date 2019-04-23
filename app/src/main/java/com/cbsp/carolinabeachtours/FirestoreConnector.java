@@ -9,16 +9,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 import static android.content.ContentValues.TAG;
 
 class FirestoreConnector {
 
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
+    private final StorageReference mStorageRef;
 
     FirestoreConnector() {
         db = FirebaseFirestore.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     /**
@@ -94,7 +98,7 @@ class FirestoreConnector {
                     " let visitors know they are in this important and unique ecosystem!",
                 34.044724, -77.917396,
                 null,
-                ctx.getResources().getIdentifier("l" + 1, "drawable", ctx.getPackageName()),
+                "img/l1.png",
                 0
         ));
 
@@ -116,7 +120,7 @@ class FirestoreConnector {
                         " amphibians. ",
                 34.042128, -77.913268,
                 null,
-                ctx.getResources().getIdentifier("l" + 2, "drawable", ctx.getPackageName()),
+                "img/l2.png",
                 2
         ));
 
@@ -133,7 +137,7 @@ class FirestoreConnector {
                         "within the Xeric Sandhill Community.",
                 34.041385, -77.918871,
                 null,
-                ctx.getResources().getIdentifier("l" + 3, "drawable", ctx.getPackageName()),
+                "img/l3.png",
                 2
         ));
 
@@ -152,7 +156,7 @@ class FirestoreConnector {
                         "and other invertebrates.",
                 34.044724, -77.917396,
                 locations.get(0).getName(),
-                ctx.getResources().getIdentifier("l1_a1" , "drawable", ctx.getPackageName()),
+                "img/l1_a1.png",
                 1
         ));
 
@@ -166,7 +170,7 @@ class FirestoreConnector {
                         "several hundred meters from the nearest woodlot.",
                 34.044724, -77.917396,
                 locations.get(0).getName(),
-                ctx.getResources().getIdentifier("l1_a2", "drawable", ctx.getPackageName()),
+                "img/l1_a2.png",
                 2
         ));
 
@@ -183,7 +187,7 @@ class FirestoreConnector {
                         "their tails and wag it when they sense danger.",
                 34.044724, -77.917396,
                 locations.get(0).getName(),
-                ctx.getResources().getIdentifier("l1_a3", "drawable", ctx.getPackageName()),
+                "img/l1_a3.png",
                 0
         ));
 
@@ -198,7 +202,7 @@ class FirestoreConnector {
                         "lifespan to reach maturity.",
                 34.044724, -77.917396,
                 locations.get(0).getName(),
-                ctx.getResources().getIdentifier("l1_p1", "drawable", ctx.getPackageName()),
+                "img/l1_p1.png",
                 0
         ));
 
@@ -212,7 +216,7 @@ class FirestoreConnector {
                         "fires, usually due to dry conditions and lightning.",
                 34.044724, -77.917396,
                 locations.get(0).getName(),
-                ctx.getResources().getIdentifier("l1_p2", "drawable", ctx.getPackageName()),
+                "img/l1_p2.png",
                 0
         ));
 
@@ -235,8 +239,196 @@ class FirestoreConnector {
                         "exoskeleton or indigestible parts of the insect will fall out.",
                 34.044724, -77.917396,
                 locations.get(0).getName(),
-                ctx.getResources().getIdentifier("l1_p3", "drawable", ctx.getPackageName()),
+                "img/l1_p3.png",
                 3
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.ANIMAL,
+                "Cricket Frog",
+                "Southern Cricket Frogs vary in color quite a bit so it's not easy to identify" +
+                        " them by coloration. They can be anywhere from green, brown, to red, yellow " +
+                        "or grayish . The best way to know that it's a Southern Cricket frog is first" +
+                        " from its size. They are very small! About the size of a dime. Adults only" +
+                        " grow to about ¾-1” long. They often have a dark triangle present between" +
+                        " the eyes and a Y-shaped stripe on their back regardless of their color pattern ",
+                34.042128, -77.913268,
+                locations.get(1).getName(),
+                "img/l2_a1.png",
+                1
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.ANIMAL,
+                "American Alligator",
+                "Let’s face it; alligators get a bad rap.  They are certainly not as cute and" +
+                        " cuddly as puppies; in fact, they just might swallow one whole. Yet, these" +
+                        " powerful, ferocious, pre-historic creatures contribute to the survival and" +
+                        " maintenance of our wetland ecosystems.  They are so important, that many" +
+                        " scientists consider alligators a \"keystone species.\"" +
+                        "Alligators are native to the southeastern coastal areas of the United States;" +
+                        " that means they are right here in our own backyard!",
+                34.042128, -77.913268,
+                locations.get(1).getName(),
+                "img/l2_a2.png",
+                3
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.ANIMAL,
+                "Painted Turtle",
+                "The painted turtle is the most widespread native turtle of North America. It" +
+                        " lives in slow-moving fresh waters; eating aquatic vegetation, algae, and small" +
+                        " water creatures including insects, crustaceans, and fish. Although they are" +
+                        " frequently consumed as eggs or hatchlings by rodents, canines, and snakes, " +
+                        "the adult turtles' hard shells protect them from most predators. Reliant on" +
+                        " warmth from its surroundings, the painted turtle is active only during the" +
+                        " day when it basks for hours on logs or rocks.",
+                34.042128, -77.913268,
+                locations.get(1).getName(),
+                "img/l2_a3.png",
+                2
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.PLANT,
+                "Pink Sundew",
+                "The pink sundew is a member of the sundew family (family Droseraceae). It is" +
+                        " a small carnivorous herb, with flowers in a raceme* or openly branched clusters," +
+                        " usually ranging from 2 to 4 cm in diameter, but in wet habitats, can grow " +
+                        "up to 7 cm. In the sunlight, the plant appears red with round, spoon-shaped" +
+                        " leaf blades with numerous tentacles. In lower light, the leaves are lime-green" +
+                        " with red tentacles. The leaves are arranged in a rosette pattern, and generally" +
+                        " lie flat on the ground. The end of each tentacle has a mucilaginous secretory" +
+                        " gland, which gives the plant its dewy appearance.",
+                34.042128, -77.913268,
+                locations.get(1).getName(),
+                "img/l2_p1.png",
+                1
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.PLANT,
+                "Bladderwort",
+                "In the world of carnivorous plants, the bladderwort is often overlooked because" +
+                        " of the more well-known Venus flytraps and pitcher plants. Many people may have" +
+                        " seen a pond covered in tiny yellow flowers and not realized what an amazing plant" +
+                        " they were viewing. The bladderwort, Utricularia inflata, is an aquatic carnivorous" +
+                        " plant with yellow flowers that look like snapdragons. It is aptly named because" +
+                        " the word “bladder” means trap and the word “wort” is the old English word " +
+                        "for plant. These plants contain bladders about one to three millimeters long" +
+                        " that vacuum up small invertebrates that brush the trigger hairs. Once the meal" +
+                        " is captured, the prey is digested by enzymes in a process that takes about three days. ",
+                34.042128, -77.913268,
+                locations.get(1).getName(),
+                "img/l2_p2.png",
+                2
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.PLANT,
+                "American Water Lily",
+                "The American Water Lily is a beautiful aquatic plant that floats either along" +
+                        " the surfaces of freshwater environments or just beneath it. It is commonly known" +
+                        " as the American White Water-lily, Fragrant White Water-lily, Sweet-scented" +
+                        " White Water-lily, and Beaver root. The flowers produced may be either white" +
+                        " or pink with yellow centers and are only one flower to one stem/lily. Each " +
+                        "flower is very fragrant, opens in the morning, closes by noon, is 2-6 inches" +
+                        " across, and has about 25 petals. The pad itself is nearly circular, has a " +
+                        "thick waxy coating, grows to about 10 inches and has a large slit down" +
+                        " one-third of its center.",
+                34.042128, -77.913268,
+                locations.get(1).getName(),
+                "img/l2_p3.png",
+                2
+        ));
+
+         locations.add(new Location(
+                Location.LocationType.ANIMAL,
+                "Gray Squirrel",
+                "The Gray Squirrel is a very common and abundant species in America. Their fur" +
+                        " tends to be yellowish brown during the summer and then becomes thick and " +
+                        "gray during the winter months. The backs of the ears are tan to cinnamon in " +
+                        "color and have white tips in the winter. Their tail is made up of long, wavy" +
+                        " hairs, each banded with brown and black at the base and have a broad, white " +
+                        "tip. The average length of the Gray Squirrel ranges from 18 to 20 inches and" +
+                        " their tail is about half of their total body length (7 to 10 in).",
+                34.041385, -77.918871,
+                locations.get(2).getName(),
+                "img/l3_a1.png",
+                1
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.ANIMAL,
+                "Orchard Spider",
+                "The Orchard Spider, also known as the \"Orchard Orb-weaver,\" and the" +
+                        " \"Venusta Orchard Spider,\" is the only spider species that received" +
+                        " its nomenclature directly from Charles Darwin himself. Now, imagine the" +
+                        "inherent horror in being the host of a strange parasite that, slowly and" +
+                        " steadily, sucks the life fluids out of you until all that remains is your" +
+                        " skeleton. Even Darwin couldn't foresee that nightmare awaiting the Orchard Spider in the forest.",
+                34.041385, -77.918871,
+                locations.get(2).getName(),
+                "img/l3_a2.png",
+                1
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.ANIMAL,
+                "Broad-headed Skink",
+                "Broadhead Skinks are the largest skinks in our region of North Carolina, ranging" +
+                        " from 5.6 to 12.8 inches long. Male skinks are distinguished by their " +
+                        "orange-red heads and olive-brown bodies, though the reddish color is only " +
+                        "prominent during mating season in the springtime. Females are smaller in " +
+                        "size and often display 5 to 7 stripes along their body, which can fade with age.",
+                34.041385, -77.918871,
+                locations.get(2).getName(),
+                "img/l3_a3.png",
+                1
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.PLANT,
+                "Turkey Oak",
+                "The turkey oak is a member of the red oak group of oaks and is native to the" +
+                        " southeastern United States. The name turkey oak derives from the resemblance" +
+                        " of the leaves to a turkey's foot.",
+                34.041385, -77.918871,
+                locations.get(2).getName(),
+                "img/l3_p1.png",
+                1
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.PLANT,
+                "Southern Live Oak",
+                "The Southern live oak, also known as the Virginia live oak, is a native tree" +
+                        " perfectly adapted for coastal areas because it is very salt tolerant. Southern" +
+                        " live oaks are a distinctive, iconic tree whose twisted and hunched trunks are" +
+                        " a common sight on barrier islands.  Their tough wood and extensive root systems" +
+                        " help them survive harsh nor'easters and hurricanes, and many of these trees" +
+                        " can live to be hundreds of years old.",
+                34.041385, -77.918871,
+                locations.get(2).getName(),
+                "img/l3_p2.png",
+                2
+        ));
+
+        locations.add(new Location(
+                Location.LocationType.PLANT,
+                "Orange Milkwort",
+                "The Orange Milkwort is biennial and a member of the polygalacea (milkwort)" +
+                        " family. The genus name Polygala means poly = many and gala = milk, not " +
+                        "for the milky sap but it was believed animals that consumed the flowers " +
+                        "would produce more milk. It is a small native flowering herb with orange " +
+                        "cylindrical flowers similar to the shape of a clover  with small smooth " +
+                        "leafy stems. They are found in pocosin type habitats similar to those" +
+                        " at Carolina Beach State Park, and can grow up to 12 inches in height.",
+                34.041385, -77.918871,
+                locations.get(2).getName(),
+                "img/l3_p3.png",
+                2
         ));
 
         for (Location loc : locations) {
