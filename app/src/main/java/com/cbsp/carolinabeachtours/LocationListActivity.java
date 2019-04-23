@@ -114,6 +114,9 @@ public class LocationListActivity extends AppCompatActivity implements
                 intent = new Intent(this, LocationListActivity.class);
                 intent.putExtra("LocationType", Location.LocationType.ANIMAL);
                 break;
+            case R.id.nav_about:
+                intent = new Intent(this, AboutActivity.class);
+                break;
             default:
                 intent = new Intent(this, MainActivity.class);
         }

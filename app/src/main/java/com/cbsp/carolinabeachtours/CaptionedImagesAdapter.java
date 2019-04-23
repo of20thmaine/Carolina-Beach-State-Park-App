@@ -3,6 +3,7 @@ package com.cbsp.carolinabeachtours;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,9 @@ class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter
 
         TextView textView = cardView.findViewById(R.id.info_text);
         textView.setText(locations.get(position).getName());
+        if (ctx instanceof MainActivity) {
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
+        }
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override

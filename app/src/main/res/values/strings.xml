@@ -2,6 +2,9 @@
     <string name="app_name">Carolina Beach State Park</string>
     <string name="popular">Popular Park Locations:</string>
 
+    <string name="about_info">Created by Bobby Palmer. Ecosystem, animal, and plant data courtesy of UNCW\'s Island Ecology Website.</string>
+    <string name="archives_url"><![CDATA[<a href="https://sites.google.com/site/islandecology12/">Visit UNCW Island Ecology</a>]]></string>
+
     <string name="nav_home">Home</string>
     <string name="nav_ecosystems">Ecosystems</string>
     <string name="nav_animals">Find Animals</string>
@@ -11,6 +14,9 @@
 
     <string name="nav_open_drawer">Open navigation drawer</string>
     <string name="nav_close_drawer">Close navigation drawer</string>
+
+    <string name="animal">Animals</string>
+    <string name="plant">Plants</string>
 
     <string name="map_icon_txt">Visit</string>
 </resources>

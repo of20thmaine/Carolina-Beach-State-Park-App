@@ -9,8 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 import static android.content.ContentValues.TAG;
@@ -18,11 +16,9 @@ import static android.content.ContentValues.TAG;
 class FirestoreConnector {
 
     private final FirebaseFirestore db;
-    private final StorageReference mStorageRef;
 
     FirestoreConnector() {
         db = FirebaseFirestore.getInstance();
-        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     /**
@@ -57,7 +53,7 @@ class FirestoreConnector {
      */
      void getPopularLocations(final MainActivity ctx) {
         db.collection("locations")
-            .orderBy("popularity", Query.Direction.DESCENDING).limit(5)
+            .orderBy("popularity", Query.Direction.DESCENDING).limit(6)
             .get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -74,6 +70,34 @@ class FirestoreConnector {
                     }
                 }
             });
+    }
+
+    /**
+     * Retrieves locations of a type within a given location.
+     * @param typeIn: ID (String) of location looking in.
+     * @param typeFind: Type of location being looked for.
+     * @param ctx: Context of calling list activity.
+     */
+    void getTypeIn(String typeIn, Location.LocationType typeFind, final LocationListActivity ctx) {
+         db.collection("locations")
+                .whereEqualTo("type", typeFind.toString())
+                .whereEqualTo("isIn", typeIn)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Location> locations = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                locations.add(document.toObject(Location.class));
+                            }
+                            ctx.drawData(locations);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            ctx.dataLoadFailed();
+                        }
+                    }
+                });
     }
 
     /**

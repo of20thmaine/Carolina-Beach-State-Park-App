@@ -77,6 +77,9 @@ public class LocationActivity extends AppCompatActivity implements
                 intent = new Intent(this, LocationListActivity.class);
                 intent.putExtra("LocationType", Location.LocationType.ANIMAL);
                 break;
+            case R.id.nav_about:
+                intent = new Intent(this, AboutActivity.class);
+                break;
             default:
                 intent = new Intent(this, MainActivity.class);
         }
@@ -99,6 +102,19 @@ public class LocationActivity extends AppCompatActivity implements
     }
 
     public void visitHere(android.view.View v) {
-        // Will deal with later, opens map.
+
     }
+
+    public void visitAnimals(android.view.View v) {
+//        Intent intent = new Intent(this, LocationListActivity.class);
+//        if (location.)
+//        intent.putExtra("FindType", Location.LocationType.ANIMAL);
+//        intent.putExtra("InType", Location.LocationType.ANIMAL);
+//        startActivity(intent);
+    }
+
+    public void visitPlants(android.view.View v) {
+
+    }
+
 }
