@@ -106,15 +106,29 @@ public class LocationActivity extends AppCompatActivity implements
     }
 
     public void visitAnimals(android.view.View v) {
-//        Intent intent = new Intent(this, LocationListActivity.class);
-//        if (location.)
-//        intent.putExtra("FindType", Location.LocationType.ANIMAL);
-//        intent.putExtra("InType", Location.LocationType.ANIMAL);
-//        startActivity(intent);
+        Intent intent = new Intent(this, LocationListActivity.class);
+        if (location.getType() == Location.LocationType.ECOSYSTEM) {
+            intent.putExtra("InType", location.getName());
+        } else {
+            intent.putExtra("InType", location.getIsIn());
+        }
+        intent.putExtra("FindType", Location.LocationType.ANIMAL);
+        intent.putExtra("WhoBCallin", location.getName());
+
+        startActivity(intent);
     }
 
     public void visitPlants(android.view.View v) {
+        Intent intent = new Intent(this, LocationListActivity.class);
+        if (location.getType() == Location.LocationType.ECOSYSTEM) {
+            intent.putExtra("InType", location.getName());
+        } else {
+            intent.putExtra("InType", location.getIsIn());
+        }
+        intent.putExtra("FindType", Location.LocationType.PLANT);
+        intent.putExtra("WhoBCallin", location.getName());
 
+        startActivity(intent);
     }
 
 }

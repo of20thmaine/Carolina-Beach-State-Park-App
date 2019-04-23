@@ -24,6 +24,7 @@ public class LocationListActivity extends AppCompatActivity implements
     Toolbar toolbar;
     RecyclerView locationRecycler;
     CaptionedImagesAdapter adapter;
+    String whoBCallin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +32,23 @@ public class LocationListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_location_list);
 
         Intent intent = getIntent();
-        Location.LocationType locationType = (Location.LocationType)
-                intent.getSerializableExtra("LocationType");
-
+        Bundle extras = intent.getExtras();
         FirestoreConnector fp = new FirestoreConnector();
-        fp.getAllLocationsOfType(locationType, this);
 
+        if (extras != null) {
+            if (extras.containsKey("LocationType")) {
+                Location.LocationType locationType = (Location.LocationType)
+                                                intent.getSerializableExtra("LocationType");
+                fp.getAllLocationsOfType(locationType, this);
+            } else if (extras.containsKey("InType") && extras.containsKey("FindType") &&
+                    extras.containsKey("WhoBCallin")) {
+                String inType = (String) intent.getSerializableExtra("InType");
+                Location.LocationType findType = (Location.LocationType)
+                        intent.getSerializableExtra("FindType");
+                whoBCallin = (String) intent.getSerializableExtra("WhoBCallin");
+                fp.getTypeIn(inType, findType, this);
+            }
+        }
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,11 +62,6 @@ public class LocationListActivity extends AppCompatActivity implements
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /* So, when the firestore connection thread completes it updates the data used in the
-         * recycler view BUT recycler view needs an adapter in onCreate otw you get horrible errors.
-         * So I bind it to an empty adapter here, and when the db thread finishes it calls drawData()
-         * which refreshes the data inside the adapter.
-         */
         LocationListActivity.locations = new ArrayList<>();
         locationRecycler = findViewById(R.id.list_recycler);
         adapter = new CaptionedImagesAdapter(locations, this);
@@ -78,8 +85,11 @@ public class LocationListActivity extends AppCompatActivity implements
      */
     void drawData(List<Location> locations) {
         LocationListActivity.locations = locations;
-        toolbar.setTitle("Visit " + locations.get(0).typeAsString() + "s");
-
+        if (whoBCallin == null) {
+            toolbar.setTitle("Visit " + locations.get(0).typeAsString() + "s");
+        } else {
+            toolbar.setTitle(locations.get(0).typeAsString() + "s Near " + whoBCallin);
+        }
         adapter.swapDataSet(LocationListActivity.locations);
     }
 
