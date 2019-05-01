@@ -127,6 +127,9 @@ public class LocationListActivity extends AppCompatActivity implements
             case R.id.nav_about:
                 intent = new Intent(this, AboutActivity.class);
                 break;
+            case R.id.nav_map:
+                intent = new Intent(this, MapsActivity.class);
+                break;
             default:
                 intent = new Intent(this, MainActivity.class);
         }

@@ -2,7 +2,10 @@ package com.cbsp.carolinabeachtours;
 
 import com.google.firebase.storage.StorageReference;
 
-public class Location {
+import java.io.Serializable;
+import java.util.List;
+
+public class Location implements Serializable {
 
     public enum LocationType {
         ECOSYSTEM {
@@ -28,11 +31,12 @@ public class Location {
     private double latitude, longitude;
     private int popularity;
     private StorageReference image;
+   private List<MyLatLong> polygon;
 
     public Location() { }
 
-    public Location(LocationType type, String name, String about, double latitude,
-                    double longitude, String isIn, String imageFile, int popularity) {
+    public Location(LocationType type, String name, String about, double latitude, double longitude,
+                    String isIn, String imageFile, int popularity, List<MyLatLong> polygon) {
         this.type = type;
         this.name = name;
         this.about = about;
@@ -41,6 +45,7 @@ public class Location {
         this.isIn = isIn;
         this.imageFile = imageFile;
         this.popularity = popularity;
+        this.polygon = polygon;
     }
 
     public LocationType getType() {
@@ -73,6 +78,10 @@ public class Location {
 
     public int getPopularity() {
         return popularity;
+    }
+
+    public List<MyLatLong> getPolygon() {
+        return polygon;
     }
 
     public String typeAsString() {

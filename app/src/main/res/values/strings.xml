@@ -19,4 +19,10 @@
     <string name="plant">Plants</string>
 
     <string name="map_icon_txt">Visit</string>
+    <string name="title_activity_maps">Park Map</string>
+
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">Access to the location service is required to allow park navigation.</string>
+    <string name="location_permission_denied">This application requires location services to be enabled in order to function properly. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings.</string>
+    <string name="permission_required_toast">Location permission is required for this feature.</string>
 </resources>

@@ -80,6 +80,9 @@ public class LocationActivity extends AppCompatActivity implements
             case R.id.nav_about:
                 intent = new Intent(this, AboutActivity.class);
                 break;
+            case R.id.nav_map:
+                intent = new Intent(this, MapsActivity.class);
+                break;
             default:
                 intent = new Intent(this, MainActivity.class);
         }
@@ -102,7 +105,9 @@ public class LocationActivity extends AppCompatActivity implements
     }
 
     public void visitHere(android.view.View v) {
-
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("Location", location);
+        startActivity(intent);
     }
 
     public void visitAnimals(android.view.View v) {

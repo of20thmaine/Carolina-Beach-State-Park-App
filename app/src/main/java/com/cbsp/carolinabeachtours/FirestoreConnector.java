@@ -73,6 +73,31 @@ class FirestoreConnector {
     }
 
     /**
+     * Gets ecosystem data for the default park map behavior.
+     * @param ctx: Map Activity's context.
+     */
+    void getEcosystems(final MapsActivity ctx) {
+         db.collection("locations")
+            .whereEqualTo("type", Location.LocationType.ECOSYSTEM.toString())
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        List<Location> locations = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            locations.add(document.toObject(Location.class));
+                        }
+                        ctx.drawLocations(locations);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        ctx.dataLoadFailed();
+                    }
+                }
+            });
+    }
+
+    /**
      * Retrieves locations of a type within a given location.
      * @param typeIn: ID (String) of location looking in.
      * @param typeFind: Type of location being looked for.
@@ -107,6 +132,56 @@ class FirestoreConnector {
     void populateFirestore(Context ctx) {
         List<Location> locations = new ArrayList<>();
 
+        List<MyLatLong> p1 = new ArrayList<>();
+        List<MyLatLong> p2 = new ArrayList<>();
+        List<MyLatLong> p3 = new ArrayList<>();
+
+        double[][] a1 = new double[][] {
+                {34.047516, -77.908101},
+                {34.046387, -77.907103},
+                {34.045658, -77.907136},
+                {34.045071, -77.907758},
+                {34.044796, -77.910344},
+                {34.044796, -77.910344},
+                {34.046707, -77.911256},
+                {34.047098, -77.909572}
+        };
+        double[][] a2 = new double[][] {
+                {34.043782, -77.913112},
+                {34.043373, -77.911964},
+                {34.043444, -77.910215},
+                {34.043609, -77.909142},
+                {34.042680, -77.909336},
+                {34.042004, -77.910081},
+                {34.042026, -77.911143},
+                {34.041497, -77.912731},
+                {34.041190, -77.914276},
+                {34.042008, -77.914807},
+                {34.042919, -77.914029}
+        };
+        double[][] a3 = new double[][] {
+                {34.044186, -77.913473},
+                {34.044291, -77.912440},
+                {34.044915, -77.912593},
+                {34.045169, -77.913575},
+                {34.045148, -77.915132},
+                {34.044566, -77.916293},
+                {34.043583, -77.915987},
+                {34.043964, -77.913971}
+        };
+
+        // I was going to store these primitive arrays in firestore, not realizing all firestore data must be serializable.
+        // SO instead of typing it again ....
+        for (int i = 0; i < a1.length; ++i) {
+            p1.add(new MyLatLong(a1[i][0], a1[i][1]));
+        }
+        for (int i = 0; i < a2.length; ++i) {
+            p2.add(new MyLatLong(a2[i][0], a2[i][1]));
+        }
+        for (int i = 0; i < a3.length; ++i) {
+            p3.add(new MyLatLong(a3[i][0], a3[i][1]));
+        }
+
         locations.add(new Location(
                 Location.LocationType.ECOSYSTEM,
                 "Pine Savanna",
@@ -120,10 +195,11 @@ class FirestoreConnector {
                     " Beach State Park has a thriving Pine Savanna that surrounds the Flytrap Trail" +
                     " in the center of the Park. When on this trail, there are many signs that" +
                     " let visitors know they are in this important and unique ecosystem!",
-                34.044724, -77.917396,
+                34.046183, -77.909067,
                 null,
                 "img/l1.png",
-                0
+                0,
+                p1
         ));
 
         locations.add(new Location(
@@ -142,10 +218,11 @@ class FirestoreConnector {
                         "by wading birds for foraging/nesting. The main value of these sites, " +
                         "however, is that they provide critical habitat for reptiles and breeding" +
                         " amphibians. ",
-                34.042128, -77.913268,
+                34.042367, -77.910500,
                 null,
                 "img/l2.png",
-                2
+                2,
+                p2
         ));
 
         locations.add(new Location(
@@ -159,10 +236,10 @@ class FirestoreConnector {
                         " that Longleaf Pine, Turkey Oaks, and Wire Grass dominate the landscape. " +
                         "One of the state park's most popular attractions, Sugarloaf Dune, lies " +
                         "within the Xeric Sandhill Community.",
-                34.041385, -77.918871,
+                34.044433, -77.912883,
                 null,
                 "img/l3.png",
-                2
+                1, p3
         ));
 
         locations.add(new Location(
@@ -178,10 +255,11 @@ class FirestoreConnector {
                         "the Six-lined Racerunner is diurnal and insectivorous; Racerunners eat a " +
                         "wide variety of insects, spiders, foraging under vegetation for termites " +
                         "and other invertebrates.",
-                34.044724, -77.917396,
+                34.046183, -77.909067,
                 locations.get(0).getName(),
                 "img/l1_a1.png",
-                1
+                1,
+                p1
         ));
 
         locations.add(new Location(
@@ -192,10 +270,11 @@ class FirestoreConnector {
                         "undergrowth.  Ideal habitat is small stands of large trees interspersed" +
                         "with agricultural land. They are often observed foraging on the ground " +
                         "several hundred meters from the nearest woodlot.",
-                34.044724, -77.917396,
+                34.046183, -77.909067,
                 locations.get(0).getName(),
                 "img/l1_a2.png",
-                2
+                2,
+                p1
         ));
 
         locations.add(new Location(
@@ -209,10 +288,11 @@ class FirestoreConnector {
                         " are mainly a reddish or grayish brown, depending on the season, except " +
                         "for the white undersides of their tails. They show the white side of " +
                         "their tails and wag it when they sense danger.",
-                34.044724, -77.917396,
+                34.046183, -77.909067,
                 locations.get(0).getName(),
                 "img/l1_a3.png",
-                0
+                0,
+                p1
         ));
 
         locations.add(new Location(
@@ -224,10 +304,11 @@ class FirestoreConnector {
                         " grow to between eighty and one hundred feet tall. The longleaf pine is a" +
                         " very slow growing tree and it can take up to half of their 300 year " +
                         "lifespan to reach maturity.",
-                34.044724, -77.917396,
+                34.046183, -77.909067,
                 locations.get(0).getName(),
                 "img/l1_p1.png",
-                0
+                0,
+                p1
         ));
 
         locations.add(new Location(
@@ -238,10 +319,11 @@ class FirestoreConnector {
                         "North Carolina's sandhill scrub and pine savannas where it is one of the " +
                         "dominant understory plants. Wiregrass is extremely adapted to natural " +
                         "fires, usually due to dry conditions and lightning.",
-                34.044724, -77.917396,
+                34.046183, -77.909067,
                 locations.get(0).getName(),
                 "img/l1_p2.png",
-                0
+                0,
+                p1
         ));
 
         locations.add(new Location(
@@ -261,10 +343,11 @@ class FirestoreConnector {
                         "anywhere between 5-12 days, in which the insect is than absorbed into " +
                         "the leaves. Once digestion is done, the trap will reopen and the " +
                         "exoskeleton or indigestible parts of the insect will fall out.",
-                34.044724, -77.917396,
+                34.046183, -77.909067,
                 locations.get(0).getName(),
                 "img/l1_p3.png",
-                3
+                4,
+                p1
         ));
 
         locations.add(new Location(
@@ -276,10 +359,11 @@ class FirestoreConnector {
                         " from its size. They are very small! About the size of a dime. Adults only" +
                         " grow to about ¾-1” long. They often have a dark triangle present between" +
                         " the eyes and a Y-shaped stripe on their back regardless of their color pattern ",
-                34.042128, -77.913268,
+                34.042367, -77.910500,
                 locations.get(1).getName(),
                 "img/l2_a1.png",
-                1
+                1,
+                p2
         ));
 
         locations.add(new Location(
@@ -292,10 +376,11 @@ class FirestoreConnector {
                         " scientists consider alligators a \"keystone species.\"" +
                         "Alligators are native to the southeastern coastal areas of the United States;" +
                         " that means they are right here in our own backyard!",
-                34.042128, -77.913268,
+                34.042367, -77.910500,
                 locations.get(1).getName(),
                 "img/l2_a2.png",
-                3
+                4,
+                p2
         ));
 
         locations.add(new Location(
@@ -308,10 +393,11 @@ class FirestoreConnector {
                         "the adult turtles' hard shells protect them from most predators. Reliant on" +
                         " warmth from its surroundings, the painted turtle is active only during the" +
                         " day when it basks for hours on logs or rocks.",
-                34.042128, -77.913268,
+                34.042367, -77.910500,
                 locations.get(1).getName(),
                 "img/l2_a3.png",
-                2
+                3,
+                p2
         ));
 
         locations.add(new Location(
@@ -325,10 +411,11 @@ class FirestoreConnector {
                         " with red tentacles. The leaves are arranged in a rosette pattern, and generally" +
                         " lie flat on the ground. The end of each tentacle has a mucilaginous secretory" +
                         " gland, which gives the plant its dewy appearance.",
-                34.042128, -77.913268,
+                34.042367, -77.910500,
                 locations.get(1).getName(),
                 "img/l2_p1.png",
-                1
+                1,
+                p2
         ));
 
         locations.add(new Location(
@@ -343,10 +430,11 @@ class FirestoreConnector {
                         "for plant. These plants contain bladders about one to three millimeters long" +
                         " that vacuum up small invertebrates that brush the trigger hairs. Once the meal" +
                         " is captured, the prey is digested by enzymes in a process that takes about three days. ",
-                34.042128, -77.913268,
+                34.042367, -77.910500,
                 locations.get(1).getName(),
                 "img/l2_p2.png",
-                2
+                3,
+                p2
         ));
 
         locations.add(new Location(
@@ -361,10 +449,11 @@ class FirestoreConnector {
                         " across, and has about 25 petals. The pad itself is nearly circular, has a " +
                         "thick waxy coating, grows to about 10 inches and has a large slit down" +
                         " one-third of its center.",
-                34.042128, -77.913268,
+                34.042367, -77.910500,
                 locations.get(1).getName(),
                 "img/l2_p3.png",
-                2
+                3,
+                p2
         ));
 
          locations.add(new Location(
@@ -377,10 +466,11 @@ class FirestoreConnector {
                         " hairs, each banded with brown and black at the base and have a broad, white " +
                         "tip. The average length of the Gray Squirrel ranges from 18 to 20 inches and" +
                         " their tail is about half of their total body length (7 to 10 in).",
-                34.041385, -77.918871,
+                34.044433, -77.912883,
                 locations.get(2).getName(),
                 "img/l3_a1.png",
-                1
+                1,
+                 p3
         ));
 
         locations.add(new Location(
@@ -392,10 +482,11 @@ class FirestoreConnector {
                         "inherent horror in being the host of a strange parasite that, slowly and" +
                         " steadily, sucks the life fluids out of you until all that remains is your" +
                         " skeleton. Even Darwin couldn't foresee that nightmare awaiting the Orchard Spider in the forest.",
-                34.041385, -77.918871,
+                34.044433, -77.912883,
                 locations.get(2).getName(),
                 "img/l3_a2.png",
-                1
+                1,
+                p3
         ));
 
         locations.add(new Location(
@@ -406,10 +497,11 @@ class FirestoreConnector {
                         "orange-red heads and olive-brown bodies, though the reddish color is only " +
                         "prominent during mating season in the springtime. Females are smaller in " +
                         "size and often display 5 to 7 stripes along their body, which can fade with age.",
-                34.041385, -77.918871,
+                34.044433, -77.912883,
                 locations.get(2).getName(),
                 "img/l3_a3.png",
-                1
+                1,
+                p3
         ));
 
         locations.add(new Location(
@@ -418,10 +510,11 @@ class FirestoreConnector {
                 "The turkey oak is a member of the red oak group of oaks and is native to the" +
                         " southeastern United States. The name turkey oak derives from the resemblance" +
                         " of the leaves to a turkey's foot.",
-                34.041385, -77.918871,
+                34.044433, -77.912883,
                 locations.get(2).getName(),
                 "img/l3_p1.png",
-                1
+                1,
+                p3
         ));
 
         locations.add(new Location(
@@ -433,10 +526,11 @@ class FirestoreConnector {
                         " a common sight on barrier islands.  Their tough wood and extensive root systems" +
                         " help them survive harsh nor'easters and hurricanes, and many of these trees" +
                         " can live to be hundreds of years old.",
-                34.041385, -77.918871,
+                34.044433, -77.912883,
                 locations.get(2).getName(),
                 "img/l3_p2.png",
-                2
+                3,
+                p3
         ));
 
         locations.add(new Location(
@@ -449,10 +543,11 @@ class FirestoreConnector {
                         "cylindrical flowers similar to the shape of a clover  with small smooth " +
                         "leafy stems. They are found in pocosin type habitats similar to those" +
                         " at Carolina Beach State Park, and can grow up to 12 inches in height.",
-                34.041385, -77.918871,
+                34.044433, -77.912883,
                 locations.get(2).getName(),
                 "img/l3_p3.png",
-                2
+                2,
+                p3
         ));
 
         for (Location loc : locations) {
