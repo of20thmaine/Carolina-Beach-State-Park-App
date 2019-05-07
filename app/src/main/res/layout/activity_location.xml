@@ -74,17 +74,17 @@
                         android:contentDescription="@string/nav_map"
                         android:src="@drawable/my_ic_map"
                         android:tint="@color/colorPrimaryDark" />
-                    <TextView
-                        android:paddingTop="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nav_map"
-                        android:text="@string/map_icon_txt"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textAlignment="center"
-                        android:layout_centerInParent="true"
-                        android:layout_centerHorizontal="true"/>
+                    <!--<TextView-->
+                        <!--android:paddingTop="2dp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@+id/nav_map"-->
+                        <!--android:text="@string/map_icon_txt"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:textColor="@color/colorPrimaryDark"-->
+                        <!--android:textAlignment="center"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:layout_centerHorizontal="true"/>-->
                 </RelativeLayout>
                  <RelativeLayout
                     android:id="@+id/animal_icon"
@@ -100,17 +100,17 @@
                         android:contentDescription="@string/animal"
                         android:src="@drawable/my_ic_animal"
                         android:tint="@color/colorPrimaryDark" />
-                    <TextView
-                        android:paddingTop="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nav_animals"
-                        android:text="@string/animal"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textAlignment="center"
-                        android:layout_centerInParent="true"
-                        android:layout_centerHorizontal="true"/>
+                    <!--<TextView-->
+                        <!--android:paddingTop="2dp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@+id/nav_animals"-->
+                        <!--android:text="@string/animal"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:textColor="@color/colorPrimaryDark"-->
+                        <!--android:textAlignment="center"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:layout_centerHorizontal="true"/>-->
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/plant_icon"
@@ -125,17 +125,17 @@
                         android:contentDescription="@string/animal"
                         android:src="@drawable/my_ic_plant"
                         android:tint="@color/colorPrimaryDark" />
-                    <TextView
-                        android:paddingTop="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nav_plants"
-                        android:text="@string/plant"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textAlignment="center"
-                        android:layout_centerInParent="true"
-                        android:layout_centerHorizontal="true"/>
+                    <!--<TextView-->
+                        <!--android:paddingTop="2dp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@+id/nav_plants"-->
+                        <!--android:text="@string/plant"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:textColor="@color/colorPrimaryDark"-->
+                        <!--android:textAlignment="center"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:layout_centerHorizontal="true"/>-->
                 </RelativeLayout>
             </LinearLayout>
 
